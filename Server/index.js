@@ -23,10 +23,25 @@ database.dbConnect();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors({
-    origin: ["http://localhost:5173", "https://study-notion-ed-tech-app-frontend.vercel.app"],
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://study-notion-ed-tech-app-frontend.vercel.app",
+  "https://study-notion-ed-tech-app-frontend-7slkmyo0d.vercel.app"
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // allow postman
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
-}));
+  })
+);
 
 app.use(fileUpload({
     useTempFiles: true,
