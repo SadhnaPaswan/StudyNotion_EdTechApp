@@ -1,6 +1,10 @@
 const express = require('express');
 const app = express();
 
+ 
+// trust first proxy
+app.set('trust proxy', 1);
+
 //import routes
 const userRoutes = require('./routes/User');
 const courseRoutes = require('./routes/Course');

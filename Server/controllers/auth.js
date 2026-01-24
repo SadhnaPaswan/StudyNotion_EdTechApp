@@ -163,9 +163,12 @@ exports.logIn = async (req,res) => {
             AccountType: existingUser.AccountType
         };
         const options = {
-            expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days
+            expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
             httpOnly: true,
-        };
+            secure: true,       // REQUIRED (https)
+            sameSite: "None",   // REQUIRED for cross-domain
+            };
+
         if(isPasswordMatch){
             //generate jwt token and send it in response
             const token = jwt.sign(payload,process.env.JWT_SECRET,{expiresIn:'72h'});
